@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<comment>DTRAExtractor Ontologies</comment>	
+    <!-- Replace $CLASSPATH_TOP in the entries below with the path to top of the model directory in your installation.  -->  
+    <entry key="ENTITY_SERIF">$CLASSPATH_TOP/classes/com/bbn/serif/ontologies/entity_ontology.owl</entry>
+    <entry key="EVENT_SERIF">$CLASSPATH_TOP/classes/com/bbn/serif/ontologies/event_ontology.owl</entry>
+    <entry key="RELATION_SERIF">$CLASSPATH_TOP/classes/com/bbn/serif/ontologies/relation_ontology.owl</entry>
+    <entry key="FACT_SERIF">$CLASSPATH_TOP/classes/com/bbn/serif/ontologies/fact_ontology.owl</entry>
+    <entry key="EVENT_CAMEO">$CLASSPATH_TOP/classes/com/bbn/serif/ontologies/cameo_event_ontology.owl</entry>
+</properties>

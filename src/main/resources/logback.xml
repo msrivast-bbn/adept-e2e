@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Allow dumping of HLTCC contents -->
+    <logger name="adept.utilities.printHltContent" level="info"/>
+
+    <!-- Allow printing of mapped analyzer output -->
+    <logger name="adept.e2e.analysis" level="info"/>
+    <logger name="adept.e2e.kbresolver" level="info"/>
+
+    <!-- Suppress progress messages from Stanford -->
+    <logger name="edu.stanford.nlp" level="error"/>
+
+    <!-- Suppress progress messages from UIUC -->
+    <logger name="edu.illinois.cs.cogcomp" level="error"/>
+
+    <root level="warn">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</configuration>

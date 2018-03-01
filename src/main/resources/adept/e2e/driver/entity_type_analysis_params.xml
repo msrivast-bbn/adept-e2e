@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Parameters to configure what filters to use in the consolidation process</comment>
+<entry key="filterTypes">EntityTypeAnalysis</entry>
+    <entry key="entityAnalysisChoice">DumpMinorityTypes</entry>
+    <entry key="entityTypeOutlierPercentThreshold">.2</entry>
+    <entry key="logFileBasename">remove_minority_types</entry>
+<entry key="ontologyType">TAC</entry>
+</properties>

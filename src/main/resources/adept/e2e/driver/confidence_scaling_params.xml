@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Parameters to configure what filters to use in the consolidation process</comment>
+<entry key="filterTypes">ConfidenceScaling</entry>
+<entry key="allRels_ConfScaleDown">0.7</entry>
+<entry key="relJustificationToArgCountRatioThreshold">0.5</entry>
+<entry key="unlikelyRels_ConfScaleDown">0.5</entry>
+<entry key="likelyRels_RelCountThreshold">3</entry>
+<entry key="likelyRels_ConfScaleUp">1.1</entry>
+<entry key="confidenceScalingLogFile">confidence_scaling_results.csv</entry>
+</properties>
+
+
+
+

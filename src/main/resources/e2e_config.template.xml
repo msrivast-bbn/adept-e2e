@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+    <comment>Config File for A2KD System</comment>
+    <!--Avoid newlines in parameter values-->
+    <!--Algorithm Parameters by Language -->
+    <algorithm_set language="EN"> <!-- English -->
+        <!-- Local path to the input directory for this language -->
+        <input_directory></input_directory>
+        <algorithm type="coref_algorithm" name="IllinoisCoref" providerName="UIUC">
+            <sparkWrapperClass>adept.e2e.algorithms.IllinoisCorefSpark</sparkWrapperClass>
+            <algorithmModule>edu.uiuc.coreference.IllinoisCoreferenceResolver</algorithmModule>
+            <configFile>edu/uiuc/coreference/IllinoisCorefConfig.xml</configFile>
+            <ontology>rere</ontology>
+            <moduleUsesDeprecatedProcessCall>true</moduleUsesDeprecatedProcessCall>
+        </algorithm>
+        <algorithm type="entity_linking_algorithm" name="RPI_EDL" providerName="RPI">
+            <sparkWrapperClass>adept.e2e.algorithms.RPIEDLSpark</sparkWrapperClass>
+            <algorithmModule>edu.rpi.blender.__main.linkipedia__.RPIEntityDiscoveryLinkingProcessor</algorithmModule>
+            <configFile>edu/rpi/blender/RPIBlenderConfig.xml</configFile>
+            <ontology>rere</ontology>
+            <moduleUsesDeprecatedProcessCall>true</moduleUsesDeprecatedProcessCall>
+        </algorithm>
+        <algorithm type="relation_extraction_algorithm" name="StanfordRE" providerName="Stanford">
+            <sparkWrapperClass>adept.e2e.algorithms.GenericAlgorithmSparkWrapper</sparkWrapperClass>
+            <algorithmModule>edu.stanford.nlp.StanfordCoreNlpProcessor</algorithmModule>
+            <configFile>edu/stanford/nlp/StanfordCoreNlpProcessorConfig.xml</configFile>
+            <ontology>tac2012</ontology>
+            <moduleUsesDeprecatedProcessCall>true</moduleUsesDeprecatedProcessCall>
+        </algorithm>
+        <algorithm type="nil_clustering_algorithm" name="IllinoisWikifier" providerName="UIUC">
+            <sparkWrapperClass>adept.e2e.algorithms.IllinoisWikifierSpark</sparkWrapperClass>
+            <algorithmModule>edu.uiuc.xlwikifier.IllinoisXLWikifier</algorithmModule>
+            <configFile>edu/uiuc/xlwikifier/en/xlwikifier-en.xml</configFile>
+            <ontology>rere</ontology>
+        </algorithm>
+        <!--Per-document time out for algorithm processing (in minutes). A document that cannot be processed within this time by any algorithm is dropped from the pipeline. If this property is not configured, a default time out of 30 minutes is used.-->
+        <algorithm_time_out>30</algorithm_time_out>
+     
+        <!-- Algorithms that the A2KD system should run; algorithms not configured
+            here will not be run. This parameter cannot be left blank. Currently, A2KD mandates
+            at least running coref_algorithm and entity_linking_algorithm. openierelation_extraction_algorithm
+            is not supported since its current integration is only a preliminary one. -->
+        <algorithms_to_run>coref_algorithm,entity_linking_algorithm,relation_extraction_algorithm,nil_clustering_algorithm</algorithms_to_run>
+        <stages_to_skip></stages_to_skip>
+        <!--In case you trust any non-coref (and non-edl) algorithms more than the coref algorithm for entity-types, you can configure those algorithms in the following property, and A2KD will use entity-types from those algorithms to overwrite the ones produced by coref algorithm (and edl algorithm). If there are more than one algorithms configured (CSV), A2KD will use those algorithms in that order to get the entity-types. For example, if the first algorithm doesn't have a mapping coref-entity or has a mapping coref-entity with UNKNOWN type, A2KD will get the mapping coref-entity from the second algorithm, and so on.-->
+        <algorithms_for_entity_type_reassignment>relation_extraction_algorithm</algorithms_for_entity_type_reassignment>
+    </algorithm_set>
+
+    <!-- Uncomment the section below to run on Chinese -->
+    <!--
+    <algorithm_set language="ZH">
+        <input_directory></input_directory>
+        <algorithm type="coref_algorithm" name="StanfordCoref_Chinese" providerName="Stanford">
+            <sparkWrapperClass>adept.e2e.algorithms.GenericAlgorithmSparkWrapper</sparkWrapperClass>
+            <algorithmModule>edu.stanford.nlp.StanfordCoreNlpProcessor</algorithmModule>
+            <configFile>edu/stanford/nlp/StanfordCoreNlpProcessorChineseConfig.xml</configFile>
+            <ontology>tac2012</ontology>
+            <moduleUsesDeprecatedProcessCall>true</moduleUsesDeprecatedProcessCall>
+        </algorithm>
+        <algorithm type="entity_linking_algorithm" name="RPI_EDL_Chinese" providerName="RPI">
+            <sparkWrapperClass>adept.e2e.algorithms.RPIEDLSpark</sparkWrapperClass>
+            <algorithmModule>edu.rpi.blender.__main.linkipedia__.RPIEntityDiscoveryLinkingProcessor</algorithmModule>
+            <configFile>edu/rpi/blender/RPIBlenderChineseConfig.xml</configFile>
+            <ontology>rere</ontology>
+            <moduleUsesDeprecatedProcessCall>true</moduleUsesDeprecatedProcessCall>
+        </algorithm>
+        <algorithms_to_run>coref_algorithm,entity_linking_algorithm</algorithms_to_run>
+        <stages_to_skip></stages_to_skip>
+    </algorithm_set>
+    -->
+
+    <!--Corpus Parameters -->
+    <!--============================================================================ -->
+    <!--Use this option to set the XML read mode for creating a Document object
+        from an SGM of MPDF file. Allowed values for this option are as documented
+        for the enum DocumentMaker.XMLReadMode:
+
+        o DEFAULT - Build the document by parsing	out the relevant elements using
+        an XML DOM parser, disregarding the raw XML	file as a whole. The character
+        offsets will refer to a contrived document value that is built from concatenating
+        the XML elements.
+
+        o RAW_XML - Similar to DEFAULT, but read the document value by explicitly locating
+        the relevant text in the raw XML file and replacing everything else with
+        whitespace. The character offsets will correspond with this "raw" value.
+
+        o RAW_XML_TAC - Like RAW_XML, but read the raw file as if it began at the opening <doc> or <DOC>
+        tag, as per TAC offset guidelines.
+
+        If this option is not set or is absent, the mode used will be DEFAULT. -->
+    <xml_read_mode>RAW_XML_TAC</xml_read_mode>
+
+    <!--Use this option to control if document deduplication is run at the beginning
+        of e2e pipeline. Allowed values are true or false. Default value is false.
+
+        Document deduplication filters out documents that seemingly have a duplicate
+        in the corpus. The threshold for the fraction of sentences from a document
+        that should match against sentences in already processed documents is 0.5.
+        One use-case for turning document deduplication off is when the documents
+        have a lot of non-content lines (e.g. headers, footers, etc.) that might
+        overlap with each other. -->
+    <run_document_deduplication>false</run_document_deduplication>
+
+    <!--If the following is set to true, A2KD serializes RDD output from various
+        stages to disk. This can be useful for diagnostic/debugging purposes. Default
+        value is true. -->
+    <serialize_rdds_to_disk>true</serialize_rdds_to_disk>
+
+    <!--Debugging Parameters -->
+    <!--============================================================================ -->
+    <!--stats_directory_path is a local path to a directory for logging output-->
+    <debug_config is_debug_mode="false" gather_statistics="false" stats_directory_path=""/>
+
+    <!--KB Parameters -->
+    <!--============================================================================ -->
+    <!--clear_kb can be true (to trigger KB-clearing at the beginning of the
+        pipeline) or false; default value is false. clear_kb must be true for a fresh
+        corpus run. -->
+    <!--Corpus ID can be any string identifying your corpus -->
+    <kb_config clear_kb="false" corpus_id="">
+        <!-- URL for the triple store -->
+        <triple_store url=""/>
+        <metadata_db host="" port="" dbName="" username="" password=""/>
+    </kb_config>
+
+
+    <!--KB-reporting parameters -->
+    <!--============================================================================ -->
+    <!--kb_report_output_dir is a local path to a directory for human readable
+        KB reports -->
+    <kb_reporting_config generate_kb_reports="false"
+                         kb_report_output_dir=""/>
+
+    <!--Path to XML properties file for KBResolver. Remove or comment this entry
+        for KBResolver properties file path out if you don't want KBResolver to run.
+        The value configured by default here points to the best current kbresolver params.
+	You can change this value to point to a different KBResolver properties file available 
+	on the shared filesystem or in the classpath.-->
+	<kb_resolver_config>adept/e2e/driver/kbresolver_all_best_params.xml</kb_resolver_config>
+</config>

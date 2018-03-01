@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Parameters for xdoc event coreference development</comment>
+<entry key="algorithms_to_run">event_xdoc_algorithm</entry>
+<entry key="filterTypes">SimpleEventCoreference</entry>
+<entry key="event_xdoc_config"></entry>
+<!-- filter out events with an ACTUAL realis less than this value. Many events seem not to have a realis distribution, so we just set this to 0 and move on-->
+<entry key="event_xdoc_realis_threshold">0.0f</entry>
+<!-- these three parameters were arbitrarily chosen because they, you know, look good in the output. Due to implementation details of the algorithm, these might not do what you expect naively; see SimpleEventCoreference for more details. -->
+<entry key="event_xdoc_min_shared_args">2</entry>
+<entry key="event_xdoc_max_fillers_per_role">4.0</entry>
+<entry key="event_xdoc_max_fillers">8</entry>
+<entry key="event_xdoc_algorithm">adept/e2e/kbresolver/SimpleEventCoreference</entry>
+
+</properties>

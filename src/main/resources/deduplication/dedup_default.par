@@ -1,0 +1,17 @@
+########################################################################
+#                                                                      #
+# dedup_default.par                          						   #
+#                                                                      #
+########################################################################
+
+db_server:              
+db_port:                
+db_name:                
+db_sentence_table_name: SentenceMD5
+db_overlap_table_name:  OverlappingDocument
+db_username:            
+db_password:            
+
+min_sentence_length:    20
+max_hash_chars:                 50
+score_threshold:                0.5
